@@ -1,7 +1,7 @@
 {
   "name": "IoT Doorbell",
   "description": "Get notified when someone visits your house",
-  "version": "0.0.1",
+  "version": "0.1.1",
   "main": "main.js",
   "engines": {
     "node": ">=0.10.0"
