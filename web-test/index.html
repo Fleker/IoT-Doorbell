@@ -1,0 +1,24 @@
+<html>
+    <head>
+        <title>IoT Doorbell</title>
+        <script src='http://code.jquery.com/jquery-2.1.4.min.js'></script>
+    </head>
+    <body>
+        <button id='doorbell'>Press Doorbell</button><br>
+        Event id: <span id='event_id'></span>
+        <button id='res_busy'>Busy</button>
+        <button id='res_free'>Free</button>
+        <button id='res_open'>Unlocked</button>
+        <script>
+            API_ENDPOINT = "http://iotdoorbell.herokuapp.com/api/v1";
+            event_id = -1;
+            setInterval(function() {
+                if(event_id >= 1) {
+                    $.get(API_ENDPOINT+"/event", function(data) {
+                        
+                    });                      
+                }
+            }, 500);
+        </script>
+    </body>
+</html>

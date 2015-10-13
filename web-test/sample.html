@@ -1,0 +1,52 @@
+<html>
+    <head>
+        <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+    </head>
+    <body>
+        <button id='doorbell'>Doorbell</button><br>
+        Event Id: <span id='event_id'></span><br>
+        <button id='response_busy'>Busy</button>
+        <button id='response_free'>Free</button>
+        <button id='response_unlocked'>Unlocked</button>
+        <br><br>
+        Response: <span id='event_response'></span>
+        <br><br>
+        <button id='check'>Check</button>
+        
+        <script>
+            var event_id = -1;
+            var API = "http://iotdoorbell.herokuapp.com/api/v1/";
+            $('#doorbell').on('click', function() {
+                $.get(API+'new', function(response) {
+                    var res = JSON.parse(response);
+                    event_id = res.event_id;
+
+                    $('#event_id').html(event_id);
+                });
+            });
+                
+            function checkEvent() {
+                $.get(API+'event', {event: event_id}, function(response) {
+                    var res = JSON.parse(response);
+                    
+                    $('#event_response').html(res.result);
+                });   
+            }
+            
+            $('#check').on('click', function() {
+                checkEvent();
+            });
+            
+            setInterval(function() {
+                checkEvent();
+            }, 500);
+
+            
+            $('#response_busy').on('click', function() {
+                $.get(API+'respond', {event: event_id, result: 2}, function(response) {
+                    
+                });
+            });
+        </script>
+    </body>
+</html>
