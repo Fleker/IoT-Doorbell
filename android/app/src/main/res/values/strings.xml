@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">IoT-Doorbell-Android</string>
+    <string name="searching">Searching</string>
+    <string name="status_is">Status: %1$d</string>
+</resources>
