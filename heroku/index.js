@@ -15,6 +15,13 @@ app.set('view engine', 'ejs');
 app.get('/', function(request, response) {
   response.render('pages/index');
 });
+app.all('*', function(req, res, next) {   
+    res.header("Access-Control-Allow-Origin", "*");   
+    res.header("Access-Control-Allow-Methods", "POST, GET");
+    res.header("Access-Control-Allow-Headers", "X-Requested-With");   
+    res.header("Access-Control-Allow-Headers", "Content-Type");   
+    next();
+});
 
 app.get('/cool', function(request, response) {
     var result = '';
@@ -23,6 +30,16 @@ app.get('/cool', function(request, response) {
     for(i=0;i<times;i++) {
         result += cool();   
     }
+        //GCM
+      var gcm = require('node-gcm');
+      var message = new gcm.Message();
+      message.addData('msg', result);
+      var regTokens = ['APA91bGcoOpbr4KyT3pKSqijn7vH0C3cY4UG76O5daY7DPm2oDI7P6DoRkCgxJkFaWcmdqmqCdzMwsIkozNiGYNJeRnLc4RR6zhnW34XiiNwlqmtnJm7paxWQDhd9ILlIsEuE_XMHkI-LWeM08bN6-QTTas9wWJU8g'];
+      var sender = new gcm.Sender('AIzaSyB3O4x85qFGvnjE1qOCiXHy8FcvDgfqirw');
+      sender.send(message, { registrationIds: regTokens }, function (err, result) {
+        if(err) console.error(err);
+        else    console.log(result);
+      });
   response.send(result);
 });
 
@@ -71,6 +88,17 @@ app.get('/api/v1/new', function(request, response) {
               console.log(result);
               console.log("Yo ",result.rows[0].event_id);
               res['event_id'] = result.rows[0].event_id;
+              //GCM
+              var gcm = require('node-gcm');
+              var message = new gcm.Message();
+              message.addData('event_id', result.rows[0].event_id+'');
+              var regTokens = ['APA91bGcoOpbr4KyT3pKSqijn7vH0C3cY4UG76O5daY7DPm2oDI7P6DoRkCgxJkFaWcmdqmqCdzMwsIkozNiGYNJeRnLc4RR6zhnW34XiiNwlqmtnJm7paxWQDhd9ILlIsEuE_XMHkI-LWeM08bN6-QTTas9wWJU8g'];
+              var sender = new gcm.Sender('AIzaSyB3O4x85qFGvnjE1qOCiXHy8FcvDgfqirw');
+              sender.send(message, { registrationIds: regTokens }, function (err, result) {
+                if(err) console.error(err);
+                else    console.log(result);
+              });
+
               response.send(JSON.stringify(res));
            }
         });
