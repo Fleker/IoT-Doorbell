@@ -2,9 +2,20 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.felkertech.n.iot_doorbell_android" >
 
+    <!-- To connect to our server -->
     <uses-permission android:name="android.permission.INTERNET"/>
+    <!-- For GCM -->
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
 
-    <uses-feature android:name="android.hardware.fingerprint" android:required="true"/>
+    <uses-feature android:name="android.hardware.fingerprint" android:required="false"/>
+    <uses-feature android:name="android.hardware.touchscreen" android:required="false"/>
+
+
+    <permission android:name="com.felkertech.n.iot_doorbell_android.gcm.permission.C2D_MESSAGE"
+        android:protectionLevel="signature" />
+    <uses-permission android:name="com.felkertech.n.iot_doorbell_android.gcm.permission.C2D_MESSAGE" />
 
     <application
         android:allowBackup="true"
@@ -19,6 +30,26 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".gcm_sample.MainActivity"
+            android:label="Find Reg Token">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <receiver
+            android:name=".gcm_sample.GcmBroadcastReceiver"
+            android:permission="com.google.android.c2dm.permission.SEND" >
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <category android:name="com.hmkcode.android.gcm" />
+            </intent-filter>
+        </receiver>
+        <service android:name=".gcm_sample.GcmMessageHandler" />
+
+        <meta-data android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
     </application>
 
 </manifest>
